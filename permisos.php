@@ -10,7 +10,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'admin') {
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "uniprofn3";
+$dbname = "universidad";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
@@ -19,26 +19,24 @@ if ($conn->connect_error) {
 }
 
 // Obtener la lista de usuarios y sus roles de la base de datos
-$sql = "SELECT id, nombre, rol FROM usuarios";
+$sql = "SELECT id, nombre, rol, habilitado FROM usuarios";
 $result = $conn->query($sql);
 
-// Manejar la actualización del rol si se envía un formulario
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id']) && isset($_POST['new_role'])) {
+// Manejar la actualización del rol y habilitación/desactivación si se envía un formulario
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id'])) {
     $user_id = $_POST['user_id'];
-    $new_role = $_POST['new_role'];
 
-    // Actualizar el rol del usuario en la base de datos
-    $update_sql = "UPDATE usuarios SET rol = '$new_role' WHERE id = $user_id";
-    if ($conn->query($update_sql) === TRUE) {
-        // Redirigir o mostrar un mensaje de éxito
-        header("Location: permisos.php");
-        exit();
-    } else {
-        // Manejar el error
-        $error_message = "Error al actualizar el rol.";
+    if (isset($_POST['new_role'])) {
+        $new_role = $_POST['new_role'];
+
+        // Actualizar el rol del usuario en la base de datos
+        $update_sql = "UPDATE usuarios SET rol = '$new_role' WHERE id = $user_id";
+        if ($conn->query($update_sql) !== TRUE) {
+            $error_message = "Error al actualizar el rol.";
+        }
     }
-    if (isset($_POST['user_id']) && isset($_POST['habilitado'])) {
-        $user_id = $_POST['user_id'];
+
+    if (isset($_POST['habilitado'])) {
         $habilitado = $_POST['habilitado'];
 
         // Actualizar la habilitación/desactivación del usuario en la base de datos
@@ -47,8 +45,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id']) && isset($
             $error_message = "Error al actualizar la habilitación.";
         }
     }
+
+    // Redirigir después de procesar la solicitud
+    header("Location: permisos.php");
+    exit();
 }
 ?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -57,9 +60,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id']) && isset($
 </head>
 <body class="bg-white flex">
     <!-- Barra lateral -->
-    <div class="bg-[#fff5d2] text-black w-1/4 py-4 px-6 h-screen">
-        <!-- ... Código de la barra lateral ... -->
-        <center>  <img src="./assets/logo.jpg" width="100" height="70" class="self-center"></center>
+    <div class="bg-[#fff5d2] w-1/4 py-4 px-6 h-screen">
+        <center> <img src="./assets/logo.jpg" width="100" height="70" class="self-center"></center>
         <div class="mb-4">
             <p class="text-xl font-semibold"><?= $_SESSION['user_name'] ?></p>
             <p class="text-sm ">Administrador</p>
@@ -68,11 +70,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id']) && isset($
         <p class="text-sm  mb-2">Menú Administración</p>
         <ul class="space-y-2">
             <li><a href="permisos.php" class="flex items-center text-black hover:text-gray-400"><span class="mr-2">Permisos</span><i class="fas fa-user-shield"></i></a></li>
-            <li><a href="maestro.php" class="flex items-center text-black hover:text-gray-400"><span class="mr-2">Maestros</span><i class="fas fa-chalkboard-teacher"></i></a></li>
-            <li><a href="#" class="flex items-center text-black hover:text-gray-400"><span class="mr-2">Alumnos</span><i class="fas fa-users"></i></a></li>
-            <li><a href="#" class="flex items-center text-black hover:text-gray-400"><span class="mr-2">Clases</span><i class="fas fa-book"></i></a></li>
+            <li><a href="maestrolista.php" class="flex items-center text-black hover:text-gray-400"><span class="mr-2">Maestros</span><i class="fas fa-chalkboard-teacher"></i></a></li>
+            <li><a href="alumnolista.php" class="flex items-center text-black hover:text-gray-400"><span class="mr-2">Alumnos</span><i class="fas fa-users"></i></a></li>
+            <li><a href="clases.php" class="flex items-center text-black hover:text-gray-400"><span class="mr-2">Clases</span><i class="fas fa-book"></i></a></li>
+            <li><a href="usuarios.php" class="flex items-center text-black hover:text-gray-400"><span class="mr-2">Usuarios</span><i class="fas fa-book"></i></a></li>
         </ul>
-    </div>
     </div>
     <!-- Contenido principal -->
     <div class="flex-grow py-4 px-6 w-full">
@@ -82,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id']) && isset($
                     <?= $_SESSION['user_name'] ?>
                 </button>
                 <ul class="absolute right-0 hidden bg-white mt-2 w-32 border shadow-md">
-                    <li><a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Cerrar Sesión</a></li>
+                    <li><a href="logout.php" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Cerrar Sesión</a></li>
                 </ul>
             </div>
         </div>

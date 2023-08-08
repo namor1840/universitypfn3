@@ -34,17 +34,27 @@ include_once("conexion.php"); // Incluir el archivo de conexión
         <p class="text-sm  mb-2">Menú Administración</p>
         <ul class="space-y-2">
             <li><a href="permisos.php" class="flex items-center text-black hover:text-gray-400"><span class="mr-2">Permisos</span><i class="fas fa-user-shield"></i></a></li>
-            <li><a href="maestro.php" class="flex items-center text-black hover:text-gray-400"><span class="mr-2">Maestros</span><i class="fas fa-chalkboard-teacher"></i></a></li>
-            <li><a href="#" class="flex items-center text-black hover:text-gray-400"><span class="mr-2">Alumnos</span><i class="fas fa-users"></i></a></li>
-            <li><a href="#" class="flex items-center text-black hover:text-gray-400"><span class="mr-2">Clases</span><i class="fas fa-book"></i></a></li>
+            <li><a href="maestrolista.php" class="flex items-center text-black hover:text-gray-400"><span class="mr-2">Maestros</span><i class="fas fa-chalkboard-teacher"></i></a></li>
+            <li><a href="alumnolista.php" class="flex items-center text-black hover:text-gray-400"><span class="mr-2">Alumnos</span><i class="fas fa-users"></i></a></li>
+            <li><a href="clases.php" class="flex items-center text-black hover:text-gray-400"><span class="mr-2">Clases</span><i class="fas fa-book"></i></a></li>
+            <li><a href="usuarios.php" class="flex items-center text-black hover:text-gray-400"><span class="mr-2">Usuarios</span><i class="fas fa-book"></i></a></li>
         </ul>
     </div>
 
     <!-- Contenido principal -->
     <div class="w-3/4 py-4 px-6">
-        <div class="bg-white p-4 rounded shadow-md">
+        <div class="bg-white p-4 rounded shadow-md w-full">
             <h2 class="text-2xl font-semibold mb-4">Bienvenido, <?= $_SESSION['user_name'] ?>!</h2>
-            <!-- Coloca aquí tu mensaje de bienvenida -->
+             <div class="flex justify-end mb-4 w-full">
+            <div class="relative">
+            <button class="text-gray-800 font-semibold">
+                    <?= $_SESSION['user_name'] ?>
+                </button>
+                <ul class="absolute right-0 hidden bg-white mt-2 w-32 border shadow-md">
+                    <li><a href="logout.php" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Cerrar Sesión</a></li>
+                </ul>
+            </div>
+        </div>
             <div id="cincopa_89f4f6">...</div>
             <script type="text/javascript">
                 var cpo = [];
