@@ -19,10 +19,10 @@ if (isset($_SESSION['user_id'])) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Archivo de conexión a la base de datos (ajusta los datos según tu configuración)
     $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "universidad";
-
+    $username = "id21126023_root";
+    $password = "Roman18*";
+    $dbname = "id21126023_universidad";
+    
     $conn = new mysqli($servername, $username, $password, $dbname);
 
     if ($conn->connect_error) {

@@ -8,9 +8,10 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'admin') {
 }
 
 $servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "universidad";
+$username = "id21126023_root";
+$password = "Roman18*";
+$dbname = "id21126023_universidad";
+
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
