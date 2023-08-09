@@ -62,8 +62,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['maestro_id']) && isse
     <!-- Contenido principal -->
     <div class="flex-grow py-4 px-6 w-full">
         <div class="flex justify-end mb-4 w-full">
-            <!-- ... Código del botón de cierre de sesión ... -->
-        </div>
+        <div class="flex justify-end mb-4 w-full">
+            <div class="relative">
+            <button class="text-gray-800 font-semibold">
+                    <?= $_SESSION['user_name'] ?>
+                </button>
+                <ul class="absolute right-0 hidden bg-white mt-2 w-32 border shadow-md">
+                    <li><a href="logout.php" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Cerrar Sesión</a></li>
+                </ul>
+            </div>
+        </div>            </div>
         <div class="bg-white p-4 rounded shadow-md h-screen">
             <h2 class="text-2xl font-semibold mb-4">Lista de Maestros y Clases Asignadas</h2>
             <?php if (isset($error_message)): ?>
