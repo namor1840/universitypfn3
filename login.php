@@ -1,95 +1,67 @@
 <?php
 session_start();
-ini_set('display_errors', 1); error_reporting(-1);
-// Verificar si el usuario ya está autenticado, en ese caso redireccionar
-if (isset($_SESSION['user_id'])) {
-    switch ($_SESSION['user_role']) {
-        case 'admin':
-            header("Location: admin.php");
-            exit();
-        case 'maestro':
-            header("Location: maestro.php");
-            exit();
-        case 'alumno':
-            header("Location: alumno.php");
-            exit();
-    }
-}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Archivo de conexión a la base de datos (ajusta los datos según tu configuración)
-    $servername = "localhost";
-    $username = "id21126023_root";
-    $password = "Roman18*";
-    $dbname = "id21126023_universidad";
-    
-    $conn = new mysqli($servername, $username, $password, $dbname);
-
-    if ($conn->connect_error) {
-        die("Conexión fallida: " . $conn->connect_error);
-    }
+    require_once 'conexion.php';
 
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    $sql = "SELECT id, nombre, rol, habilitado FROM usuarios WHERE email = '$email' AND password = '$password'";
+    $sql = "SELECT id, nombre, password, rol, habilitado FROM usuarios WHERE email = '$email'";
     $result = $conn->query($sql);
 
-    if ($result->num_rows > 0) {
+    if ($result->num_rows === 1) {
         $row = $result->fetch_assoc();
-
-        if ($row['habilitado'] == 0) {
-            $error_message = "El usuario está desactivado.";
-        } else {
+        if (password_verify($password, $row['password']) && $row['habilitado'] == 1) {
             $_SESSION['user_id'] = $row['id'];
             $_SESSION['user_name'] = $row['nombre'];
             $_SESSION['user_role'] = $row['rol'];
 
-            if ($row['rol'] === 'admin') {
-                header("Location: admin.php");
-            } elseif ($row['rol'] === 'maestro') {
-                header("Location: maestro.php");
-            } elseif ($row['rol'] === 'alumno') {
-                header("Location: alumno.php");
+            $redirect_url = "";
+            switch ($row['rol']) {
+                case 'admin':
+                    $redirect_url = "admin.php";
+                    break;
+                case 'alumno':
+                    $redirect_url = "alumno.php";
+                    break;
+                case 'maestro':
+                    $redirect_url = "maestro.php";
+                    break;
+                // Puedes agregar más casos según los roles disponibles
+
+                default:
+                    $redirect_url = "error.php"; // Página de error en caso de roles desconocidos
             }
+
+            header("Location: $redirect_url");
             exit();
+        } else {
+            $error_message = "Credenciales inválidas o usuario desactivado.";
         }
     } else {
-        $error_message = "Credenciales inválidas.";
+        $error_message = "Credenciales inválidas o usuario desactivado.";
     }
-
-    $conn->close();
 }
 ?>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Inicio de sesión</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <title>Iniciar Sesión</title>
+    <link href="/dist/output.css" rel="stylesheet">
 </head>
-<body class="bg-gray-100 min-h-screen flex items-center justify-center">
-    <div class="bg-white max-w-md p-6 rounded shadow-md">
-        <h2 class="text-2xl font-semibold mb-6">Iniciar sesión</h2>
+<body class="bg-gray-100 h-screen flex justify-center items-center">
+    <div class="w-1/3 p-6 bg-white rounded shadow">
+        <h2 class="text-2xl font-semibold mb-4">Iniciar Sesión</h2>
         <?php if (isset($error_message)): ?>
-        <p class="text-red-500 mb-4"><?= $error_message ?></p>
+            <p class="text-red-500 mb-4"><?= $error_message ?></p>
         <?php endif; ?>
         <form action="login.php" method="post">
-            <div class="mb-4">
-                <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Email:</label>
-                <input type="text" name="email" id="email" required
-                       class="w-full px-3 py-2 rounded border border-gray-300 focus:outline-none focus:border-blue-500">
-            </div>
-
-            <div class="mb-6">
-                <label for="password" class="block text-gray-700 text-sm font-bold mb-2">Contraseña:</label>
-                <input type="password" name="password" id="password" required
-                       class="w-full px-3 py-2 rounded border border-gray-300 focus:outline-none focus:border-blue-500">
-            </div>
-
-            <div class="flex justify-end">
-                <input type="submit" value="Iniciar sesión"
-                       class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
-            </div>
+            <label class="block font-semibold">Correo Electrónico:</label>
+            <input type="email" name="email" class="border rounded px-2 py-1 w-full mb-2" required>
+            <label class="block font-semibold">Contraseña:</label>
+            <input type="password" name="password" class="border rounded px-2 py-1 w-full mb-4" required>
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Iniciar Sesión</button>
         </form>
     </div>
 </body>

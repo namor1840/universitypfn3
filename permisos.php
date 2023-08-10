@@ -7,12 +7,10 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'admin') {
     exit();
 }
 
-$servername = "localhost";
-$username = "id21126023_root";
-$password = "Roman18*";
-$dbname = "id21126023_universidad";
-
-
+   $servername = "localhost";
+    $username = "id21126023_admin";
+    $password = "Roman18*";
+    $dbname = "id21126023_universidad";
 $conn = new mysqli($servername, $username, $password, $dbname);
 
 if ($conn->connect_error) {
@@ -61,22 +59,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id'])) {
 </head>
 <body class="bg-white flex">
     <!-- Barra lateral -->
-    <div class="bg-[#fff5d2] w-1/4 py-4 px-6 h-screen">
-        <center> <img src="./assets/logo.jpg" width="100" height="70" class="self-center"></center>
-        <div class="mb-4">
-            <p class="text-xl font-semibold"><?= $_SESSION['user_name'] ?></p>
-            <p class="text-sm ">Administrador</p>
-        </div>
-        <hr class="border-t border-gray-700 my-4">
-        <p class="text-sm  mb-2">Menú Administración</p>
-        <ul class="space-y-2">
-            <li><a href="permisos.php" class="flex items-center text-black hover:text-gray-400"><span class="mr-2">Permisos</span><i class="fas fa-user-shield"></i></a></li>
-            <li><a href="maestrolista.php" class="flex items-center text-black hover:text-gray-400"><span class="mr-2">Maestros</span><i class="fas fa-chalkboard-teacher"></i></a></li>
-            <li><a href="alumnolista.php" class="flex items-center text-black hover:text-gray-400"><span class="mr-2">Alumnos</span><i class="fas fa-users"></i></a></li>
-            <li><a href="clases.php" class="flex items-center text-black hover:text-gray-400"><span class="mr-2">Clases</span><i class="fas fa-book"></i></a></li>
-            <li><a href="usuarios.php" class="flex items-center text-black hover:text-gray-400"><span class="mr-2">Usuarios</span><i class="fas fa-book"></i></a></li>
-        </ul>
+ <div class="bg-[#fff5d2] w-1/4 py-4 px-6 h-screen fixed top-0 left-0 bottom-0 overflow-y-auto border-r-2 border-gray-300">
+    <center> <img src="./assets/logo.jpg" width="230" height="70" class="self-center"></center>
+    <div class="mb-4 text-center">
+        <p class="text-xl font-semibold"><?= $_SESSION['user_name'] ?></p>
+        <p class="text-sm">Administrador</p>
     </div>
+    <hr class="border-t border-gray-700 my-4">
+    <p class="text-sm mb-2 text-center">Menú Administración</p>
+    <ul class="space-y-2">
+        <li class="flex justify-center"><a href="permisos.php" class="text-black hover:text-gray-400"><span class="mr-2">Permisos</span><i class="fas fa-user-shield"></i></a></li>
+        <li class="flex justify-center"><a href="maestrolista.php" class="text-black hover:text-gray-400"><span class="mr-2">Maestros</span><i class="fas fa-chalkboard-teacher"></i></a></li>
+        <li class="flex justify-center"><a href="alumnolista.php" class="text-black hover:text-gray-400"><span class="mr-2">Alumnos</span><i class="fas fa-users"></i></a></li>
+        <li class="flex justify-center"><a href="clases.php" class="text-black hover:text-gray-400"><span class="mr-2">Clases</span><i class="fas fa-book"></i></a></li>
+        <li class="flex justify-center"><a href="usuarios.php" class="text-black hover:text-gray-400"><span class="mr-2">Usuarios</span><i class="fas fa-users"></i></a></li>
+    </ul>
+</div>
+
     <!-- Contenido principal -->
     <div class="flex-grow py-4 px-6 w-full">
         <div class="flex justify-end mb-4 w-full">

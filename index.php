@@ -6,7 +6,7 @@
   <link href="/dist/output.css" rel="stylesheet">
 </head>
 <body>
-<body class="bg-violet-300 min-h-screen flex items-center justify-center">
+<body class="bg-blue-400 min-h-screen flex items-center justify-center">
     <div class="bg-[#fff5d2] max-w-md p-6 rounded shadow-md">
     <img class="w-[400px] h-[375px]" src="./assets/logo.jpg" alt="log-icon">
         <h2 class="text-2xl font-semibold mb-6">Iniciar sesión</h2>

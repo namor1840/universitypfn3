@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Aug 08, 2023 at 09:53 PM
+-- Generation Time: Aug 10, 2023 at 09:46 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -39,10 +39,22 @@ CREATE TABLE `alumnos` (
 --
 
 INSERT INTO `alumnos` (`id`, `nombre`, `email`, `clase_id`) VALUES
-(1, 'Luis Rodríguez', 'luis@example.com', 1),
+(1, 'Luis Rodríguez', 'luis@example.com', 3),
 (2, 'Laura Gómez', 'laura@example.com', 2),
 (3, 'Carlos Sánchez', 'carlos@example.com', 3),
 (4, 'María Ramírez', 'maria@example.com', 4);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `asignaciones`
+--
+
+CREATE TABLE `asignaciones` (
+  `id` int(11) NOT NULL,
+  `alumno_id` int(11) NOT NULL,
+  `clase_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -85,7 +97,9 @@ CREATE TABLE `maestros` (
 INSERT INTO `maestros` (`id`, `nombre`, `email`, `clase_id`) VALUES
 (1, 'Juan Pérez', 'juan@example.com', 1),
 (2, 'María López', 'maria@example.com', 2),
-(3, 'Carlos González', 'carlos@example.com', 3);
+(3, 'Carlos González', 'carlos@example.com', 3),
+(4, 'John Smith', 'smith@example.com', 4),
+(5, 'Roman Franco', 'roman@example.com', 3);
 
 -- --------------------------------------------------------
 
@@ -107,14 +121,16 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id`, `nombre`, `email`, `password`, `rol`, `habilitado`) VALUES
-(1, 'Administrador', 'admin@admin.com', 'admin', 'admin', 1),
-(2, 'Juan Pérez', 'juan@example.com', 'juan', 'maestro', 1),
-(3, 'María López', 'maria@example.com', 'maria', 'maestro', 1),
-(4, 'Carlos González', 'carlos@example.com', 'carlos', 'maestro', 1),
-(5, 'Luis Rodríguez', 'luis@example.com', 'luis', 'alumno', 1),
-(6, 'Laura Gómez', 'laura@example.com', 'laura', 'alumno', 1),
-(7, 'Carlos Sánchez', 'carlos@example.com', 'carlos2', 'alumno', 1),
-(8, 'María Ramírez', 'maria@example.com', 'mariar', 'alumno', 1);
+(1, 'Administrador', 'admin@admin.com', '$2y$10$HPxd2sHYByl8KlUaQlqCiuZy9ejAYSwGERZz.RgdGnZbZSrqIgYsO', 'admin', 1),
+(2, 'Juan Pérez', 'juan@example.com', '$2y$10$wV5l1TL40xzSTnac1fxdVe/69Z826ctjE3RAOJC1OqvJRZsrc0iIa', 'maestro', 1),
+(3, 'María López', 'maria@example.com', '$2y$10$FKwOaK37AvJqbVs6K/Q4bu7lw6kmv8s8xQBWa9Ol5t69TsZryIhFu', 'maestro', 1),
+(4, 'Carlos González', 'carlos@example.com', '$2y$10$OTLjoWkV9x5ibGW7j9aZxuk9ITlUas3MeQVG2nMmvC4Eri5t.EHOy', 'maestro', 1),
+(5, 'Luis Rodríguez', 'luis@example.com', '$2y$10$RrxcErK63LPmb.zyFFpjaeb2oKjRdHjLlbGcTRgdSJYXro4ywhVUS', 'alumno', 1),
+(6, 'Laura Gómez', 'laura@example.com', '$2y$10$K0JqHvLRysNDgJskd7U34OI5XA5UCHW/WuyypTSUZqq9Noha3fIC6', 'alumno', 1),
+(7, 'Carlos Sánchez', 'carlos@example.com', '$2y$10$3WptiJrOjotvfTEf0NqT1u3dJyxVVVIo49y/2V9YK8XR9bD7X4h1e', 'alumno', 1),
+(11, 'Roman Franco', 'roman@example.com', '$2y$10$Myv.5FVYHmpGP41iximjVOK8EP/PiFjp1V7LX./nwIAytLk5Jonly', 'maestro', 1),
+(12, 'John Smith', 'smith@example.com', '$2y$10$3xGLADl/br/HHwHvGbaLterNzNlmefTmN3ks8K6CZBZBI0D3obUDi', 'alumno', 1),
+(13, 'Jack Bauer', 'jack@ctu.com', '$2y$10$zP/VcW6g3/R7shEA9Nqw3.i/sYvnyHkmXFlk3xAGwzd0RVc.KaBXi', 'alumno', 1);
 
 --
 -- Indexes for dumped tables
@@ -125,6 +141,14 @@ INSERT INTO `usuarios` (`id`, `nombre`, `email`, `password`, `rol`, `habilitado`
 --
 ALTER TABLE `alumnos`
   ADD PRIMARY KEY (`id`),
+  ADD KEY `clase_id` (`clase_id`);
+
+--
+-- Indexes for table `asignaciones`
+--
+ALTER TABLE `asignaciones`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `alumno_id` (`alumno_id`),
   ADD KEY `clase_id` (`clase_id`);
 
 --
@@ -157,6 +181,12 @@ ALTER TABLE `alumnos`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
+-- AUTO_INCREMENT for table `asignaciones`
+--
+ALTER TABLE `asignaciones`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `clases`
 --
 ALTER TABLE `clases`
@@ -166,13 +196,13 @@ ALTER TABLE `clases`
 -- AUTO_INCREMENT for table `maestros`
 --
 ALTER TABLE `maestros`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- Constraints for dumped tables
@@ -183,6 +213,13 @@ ALTER TABLE `usuarios`
 --
 ALTER TABLE `alumnos`
   ADD CONSTRAINT `alumnos_ibfk_1` FOREIGN KEY (`clase_id`) REFERENCES `clases` (`id`);
+
+--
+-- Constraints for table `asignaciones`
+--
+ALTER TABLE `asignaciones`
+  ADD CONSTRAINT `asignaciones_ibfk_1` FOREIGN KEY (`alumno_id`) REFERENCES `alumnos` (`id`),
+  ADD CONSTRAINT `asignaciones_ibfk_2` FOREIGN KEY (`clase_id`) REFERENCES `clases` (`id`);
 
 --
 -- Constraints for table `maestros`
