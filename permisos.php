@@ -7,10 +7,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'admin') {
     exit();
 }
 
-   $servername = "localhost";
-    $username = "id21126023_admin";
-    $password = "Roman18*";
-    $dbname = "id21126023_universidad";
+require_once 'conexion.php';
 $conn = new mysqli($servername, $username, $password, $dbname);
 
 if ($conn->connect_error) {
@@ -99,7 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id'])) {
                         <th class="px-4 py-2">#</th>
                         <th class="px-4 py-2">Nombre</th>
                         <th class="px-4 py-2">Rol</th>
-                        <th class="px-4 py-2">Desactivado</th>
+                        <th class="px-4 py-2">Habilitado</th>
                         <th class="px-4 py-2">Editar Rol</th>
                         <th class="px-4 py-2">Habilitar/Desactivar</th>
                     </tr>

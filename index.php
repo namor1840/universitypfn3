@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <!doctype html>
 <html>
 <head>
@@ -10,6 +14,10 @@
     <div class="bg-[#fff5d2] max-w-md p-6 rounded shadow-md">
     <img class="w-[400px] h-[375px]" src="./assets/logo.jpg" alt="log-icon">
         <h2 class="text-2xl font-semibold mb-6">Iniciar sesión</h2>
+      <?php if (isset($_SESSION['error_message'])): ?>
+         <p class="text-red-500 mb-4"><?php echo $_SESSION['error_message']; ?></p>
+          <?php unset($_SESSION['error_message']); ?>
+      <?php endif; ?>
         <form action="login.php" method="post">
             <div class="mb-4">
                 <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Email:</label>

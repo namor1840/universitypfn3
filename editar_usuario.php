@@ -1,10 +1,10 @@
 <?php
 session_start();
 
-   $servername = "localhost";
-    $username = "id21126023_admin";
-    $password = "Roman18*";
-    $dbname = "id21126023_universidad";
+$servername = "v48.h.filess.io";
+ $username = "NamorProjects_blackhayup";
+ $password = "24961d0ecc320eea10392be9cbd172427fd82f9e";
+ $dbname = "NamorProjects_blackhayup";
 $conn = new mysqli($servername, $username, $password, $dbname);
 
 if ($conn->connect_error) {
@@ -68,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <!-- ... Código del botón de usuario ... -->
         </div>
         <div class="bg-white p-4 rounded shadow-md h-screen">
-            <h2 class="text-2xl font-semibold mb-4">Editar Usuario</h2>
+            <h2 class="text-2xl font-semibold mb-4">Editar Usuario</h2>     
             <?php if (isset($error_message)) : ?>
                 <p class="text-red-500"><?= $error_message ?></p>
             <?php endif; ?>

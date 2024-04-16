@@ -28,41 +28,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 case 'maestro':
                     $redirect_url = "maestro.php";
                     break;
-                // Puedes agregar más casos según los roles disponibles
-
                 default:
-                    $redirect_url = "error.php"; // Página de error en caso de roles desconocidos
+                    $redirect_url = "erro.php"; // Página de error en caso de roles desconocidos
             }
 
+            $conn->close(); // Cerrar la conexión antes de la redirección
             header("Location: $redirect_url");
             exit();
         } else {
-            $error_message = "Credenciales inválidas o usuario desactivado.";
+            $_SESSION['error_message'] = "Credenciales inválidas o usuario desactivado.";
         }
     } else {
-        $error_message = "Credenciales inválidas o usuario desactivado.";
+        $_SESSION['error_message'] = "Credenciales inválidas o usuario desactivado.";
     }
 }
+
+// Si llegamos a este punto, algo salió mal, y deberíamos redirigir de nuevo al index.php
+$_SESSION['error_message'] = "Error en la autenticación."; // Puedes personalizar este mensaje
+$conn->close();
+header("Location: index.php");
+exit();
 ?>
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Iniciar Sesión</title>
-    <link href="/dist/output.css" rel="stylesheet">
-</head>
-<body class="bg-gray-100 h-screen flex justify-center items-center">
-    <div class="w-1/3 p-6 bg-white rounded shadow">
-        <h2 class="text-2xl font-semibold mb-4">Iniciar Sesión</h2>
-        <?php if (isset($error_message)): ?>
-            <p class="text-red-500 mb-4"><?= $error_message ?></p>
-        <?php endif; ?>
-        <form action="login.php" method="post">
-            <label class="block font-semibold">Correo Electrónico:</label>
-            <input type="email" name="email" class="border rounded px-2 py-1 w-full mb-2" required>
-            <label class="block font-semibold">Contraseña:</label>
-            <input type="password" name="password" class="border rounded px-2 py-1 w-full mb-4" required>
-            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Iniciar Sesión</button>
-        </form>
-    </div>
-</body>
-</html>

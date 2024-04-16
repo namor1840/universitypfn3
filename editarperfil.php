@@ -1,10 +1,10 @@
 <?php
 session_start();
 
-   $servername = "localhost";
-    $username = "id21126023_admin";
-    $password = "Roman18*";
-    $dbname = "id21126023_universidad";
+$servername = "v48.h.filess.io";
+ $username = "NamorProjects_blackhayup";
+ $password = "24961d0ecc320eea10392be9cbd172427fd82f9e";
+ $dbname = "NamorProjects_blackhayup";
 $conn = new mysqli($servername, $username, $password, $dbname);
 
 if ($conn->connect_error) {
@@ -13,7 +13,7 @@ if ($conn->connect_error) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nombre = $_POST['nombre'];
-    $email = $_POST['email'];
+    $email = $_POST['email'];,
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
     $update_sql = "UPDATE usuarios SET nombre = '$nombre', email = '$email', password = '$password' WHERE id = {$_SESSION['user_id']}";

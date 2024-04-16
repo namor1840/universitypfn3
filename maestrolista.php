@@ -1,10 +1,10 @@
 <?php
 session_start();
 
-   $servername = "localhost";
-    $username = "id21126023_admin";
-    $password = "Roman18*";
-    $dbname = "id21126023_universidad";
+$servername = "v48.h.filess.io";
+ $username = "NamorProjects_blackhayup";
+ $password = "24961d0ecc320eea10392be9cbd172427fd82f9e";
+ $dbname = "NamorProjects_blackhayup";
 $conn = new mysqli($servername, $username, $password, $dbname);
 
 if ($conn->connect_error) {
@@ -30,7 +30,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['maestro_id']) && isse
     // Actualizar las clases asignadas del maestro en la base de datos
     $update_sql = "UPDATE maestros SET clase_id = '$clases' WHERE id = $maestro_id";
     if ($conn->query($update_sql) !== TRUE) {
-        $error_message = "Error al actualizar las clases asignadas del maestro.";
+        $error_message = "Error al actualizar las clases asignadas del maestro: " . $conn->error;
+    } else {
+        // Redirigir a la misma página para refrescar la vista
+        header("Location: maestrolista.php");
+        exit(); // Asegura que el script no continúe ejecutándose después de la redirección
     }
 }
 
